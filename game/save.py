@@ -10,6 +10,7 @@ def save_game(player, current_day):
     save_data = {
         "day": current_day,
         "player": {
+            "name": player.name,
             "hunger": player.hunger,
             "thirst": player.thirst,
             "energy": player.energy,
@@ -47,13 +48,15 @@ def load_game():
         current_day = save_data.get("day", 0)
         
         player = Player(
+            name=player_data.get("name", "Survivor"),
             hunger=player_data.get("hunger", 100),
             thirst=player_data.get("thirst", 100),
             energy=player_data.get("energy", 100),
             days_survived=player_data.get("days_survived", 0)
         )
         
-        print(f"\n✅ Game loaded! Resuming from day {current_day}...")
+        print(f"\n✅ Game loaded! Welcome back, {player.name}!")
+        print(f"Resuming from day {current_day}...")
         return player, current_day
     
     except json.JSONDecodeError:

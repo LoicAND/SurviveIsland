@@ -5,7 +5,7 @@ from game.save import save_game, load_game, delete_save
 
 
 def display_gauges(player):
-    print(f"\n📅 Day {player.days_survived}")
+    print(f"\n📅 Day {player.days_survived} - 🏝️ {player.name.upper()}")
     print("=" * 40)
     print(f"Hunger: {player.hunger}/100 | Thirst: {player.thirst}/100 | Energy: {player.energy}/100")
     print("=" * 40)
@@ -61,9 +61,13 @@ def game_loop():
     if load_choice == "y":
         player, current_day = load_game()
         if player is None:
-            player = Player()
+            player_name = input("\n👤 Enter your name: ").strip() or "Survivor"
+            player = Player(name=player_name)
+            print(f"\n🌴 Welcome, {player.name}! Good luck!\n")
     else:
-        player = Player()
+        player_name = input("\n👤 Enter your name: ").strip() or "Survivor"
+        player = Player(name=player_name)
+        print(f"\n🌴 Welcome, {player.name}! Good luck!\n")
     
     total_days = 10
     

@@ -1,6 +1,7 @@
 class Player:
     
-    def __init__(self, hunger=100, thirst=100, energy=100, days_survived=0):
+    def __init__(self, hunger=100, thirst=100, energy=100, days_survived=0, name="Survivor"):
+        self.name = name
         self.hunger = hunger
         self.thirst = thirst
         self.energy = energy
@@ -16,7 +17,7 @@ class Player:
     
     def display_status(self):
         print("=" * 40)
-        print("PLAYER STATUS")
+        print(f"🏝️  {self.name.upper()}'S STATUS")
         print("=" * 40)
         print(f"Hunger   : {self.hunger}/100")
         print(f"Thirst   : {self.thirst}/100")
