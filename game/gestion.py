@@ -1,6 +1,7 @@
 from game.player import Player
 from game.actions import fish, sleep, search_water, explore
 from game.evenements import generate_event
+from game.save import save_game, load_game, delete_save
 
 
 def display_gauges(player):
@@ -16,14 +17,15 @@ def choose_action():
     print("2 - Sleep 😴")
     print("3 - Search for water 💧")
     print("4 - Explore 🗺️")
+    print("5 - Quit and save 💾")
     
     while True:
         try:
-            choice = input("\nYour choice (1-4): ").strip()
-            if choice in ["1", "2", "3", "4"]:
+            choice = input("\nYour choice (1-5): ").strip()
+            if choice in ["1", "2", "3", "4", "5"]:
                 return choice
             else:
-                print("❌ Invalid choice. Please enter 1, 2, 3, or 4.")
+                print("❌ Invalid choice. Please enter 1, 2, 3, 4, or 5.")
         except:
             print("❌ Invalid input. Please try again.")
 
@@ -54,7 +56,15 @@ def game_loop():
     print("Manage your hunger, thirst, and energy wisely.")
     print("="*50 + "\n")
     
-    player = Player()
+    load_choice = input("📂 Do you want to load a saved game? (y/n): ").strip().lower()
+    
+    if load_choice == "y":
+        player, current_day = load_game()
+        if player is None:
+            player = Player()
+    else:
+        player = Player()
+    
     total_days = 10
     
     while True:
@@ -66,9 +76,15 @@ def game_loop():
             print("\n" + "="*50)
             print(message)
             print("="*50 + "\n")
+            delete_save()
             break
         
         action_choice = choose_action()
+        
+        if action_choice == "5":
+            save_game(player, player.days_survived)
+            print("\n👋 Game saved! See you next time!")
+            return
         
         print("\n" + "-"*40)
         if action_choice == "1":
@@ -90,6 +106,8 @@ def game_loop():
         
         if action_choice != "2":
             player.days_survived += 1
+        
+        save_game(player, player.days_survived)
     
     replay = input("\n🔄 Do you want to play again? (y/n): ").strip().lower()
     if replay == "y":

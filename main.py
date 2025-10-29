@@ -1,2 +1,5 @@
+from game.gestion import game_loop
+
+
 if __name__ == "__main__":
-    print("Play game")
+    game_loop()
