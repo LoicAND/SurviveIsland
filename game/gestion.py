@@ -52,11 +52,8 @@ def game_loop():
     print("\n" + "="*50)
     print("🏝️  WELCOME TO SURVIVE ISLAND  🏝️")
     print("="*50)
-    print("\nYour goal: Survive 10 days on a desert island!")
-    print("Manage your hunger, thirst, and energy wisely.")
-    print("="*50 + "\n")
     
-    load_choice = input("📂 Do you want to load a saved game? (y/n): ").strip().lower()
+    load_choice = input("\n📂 Do you want to load a saved game? (y/n): ").strip().lower()
     
     if load_choice == "y":
         player, current_day = load_game()
@@ -69,7 +66,20 @@ def game_loop():
         player = Player(name=player_name)
         print(f"\n🌴 Welcome, {player.name}! Good luck!\n")
     
-    total_days = 10
+    while True:
+        try:
+            days_input = input("🎯 How many days do you think you can survive? (10-50): ").strip()
+            total_days = int(days_input)
+            if 10 <= total_days <= 50:
+                break
+            else:
+                print("❌ Please enter a number between 10 and 50.")
+        except ValueError:
+            print("❌ Please enter a valid number.")
+    
+    print(f"\n🏝️ Your goal: Survive {total_days} days on a desert island!")
+    print("Manage your hunger, thirst, and energy wisely.")
+    print("="*50 + "\n")
     
     while True:
         display_gauges(player)
