@@ -104,6 +104,16 @@ def game_loop():
         
         print("\n🎲 Random event...")
         event_message = generate_event(player)
+        
+        if event_message == "RESCUE":
+            print("🚢 A RESCUE BOAT SPOTTED YOU!")
+            print("They're coming to save you!")
+            print("\n" + "="*50)
+            print(f"🎉 RESCUED! You survived {player.days_survived} days and got rescued!")
+            print("="*50 + "\n")
+            delete_save()
+            break
+        
         print(event_message)
         
         player.update_gauges(delta_hunger=-5, delta_thirst=-5, delta_energy=-3)
