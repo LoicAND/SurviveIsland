@@ -26,6 +26,11 @@ EVENTS = {
         "weight": 2,
         "description": "Nothing interesting happens...",
         "function": "nothing"
+    },
+    "boat_rescue": {
+        "weight": 1,
+        "description": "A rescue boat spots you!",
+        "function": "boat_rescue"
     }
 }
 
@@ -59,6 +64,10 @@ def injury(player):
 
 def nothing(player):
     return "😐 Nothing interesting happens on this day..."
+
+
+def boat_rescue(player):
+    return "RESCUE"
 
 
 def generate_event(player):
