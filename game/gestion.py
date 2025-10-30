@@ -126,27 +126,42 @@ def game_loop():
     
     load_choice = input("\n📂 Do you want to load a saved game? (y/n): ").strip().lower()
     
+    total_days = 10  # Default value
+    
     if load_choice == "y":
-        player, current_day = load_game()
+        player, current_day, total_days = load_game()
         if player is None:
             player_name = input("\n👤 Enter your name: ").strip() or "Survivor"
             player = Player(name=player_name)
             print(f"\n🌴 Welcome, {player.name}! Good luck!\n")
+            # Ask for days goal since no save was loaded
+            while True:
+                try:
+                    days_input = input("🎯 How many days do you think you can survive? (10-50): ").strip()
+                    total_days = int(days_input)
+                    if 10 <= total_days <= 50:
+                        break
+                    else:
+                        print("❌ Please enter a number between 10 and 50.")
+                except ValueError:
+                    print("❌ Please enter a valid number.")
+        else:
+            print(f"Your goal: Survive {total_days} days!")
     else:
         player_name = input("\n👤 Enter your name: ").strip() or "Survivor"
         player = Player(name=player_name)
         print(f"\n🌴 Welcome, {player.name}! Good luck!\n")
-    
-    while True:
-        try:
-            days_input = input("🎯 How many days do you think you can survive? (10-50): ").strip()
-            total_days = int(days_input)
-            if 10 <= total_days <= 50:
-                break
-            else:
-                print("❌ Please enter a number between 10 and 50.")
-        except ValueError:
-            print("❌ Please enter a valid number.")
+        # Ask for days goal for new game
+        while True:
+            try:
+                days_input = input("🎯 How many days do you think you can survive? (10-50): ").strip()
+                total_days = int(days_input)
+                if 10 <= total_days <= 50:
+                    break
+                else:
+                    print("❌ Please enter a number between 10 and 50.")
+            except ValueError:
+                print("❌ Please enter a valid number.")
     
     print(f"\n🏝️ Your goal: Survive {total_days} days on a desert island!")
     print("Manage your hunger, thirst, and energy wisely.")
@@ -167,7 +182,7 @@ def game_loop():
         action_choice = choose_action()
         
         if action_choice == "5":
-            save_game(player, player.days_survived)
+            save_game(player, player.days_survived, total_days)
             print("\n👋 Game saved! See you next time!")
             return
         
@@ -199,10 +214,10 @@ def game_loop():
         
         player.update_gauges(delta_hunger=-5, delta_thirst=-5, delta_energy=-3)
         
-        if action_choice != "2":
-            player.days_survived += 1
+        # Each action = 1 day
+        player.days_survived += 1
         
-        save_game(player, player.days_survived)
+        save_game(player, player.days_survived, total_days)
     
     replay = input("\n🔄 Do you want to play again? (y/n): ").strip().lower()
     if replay == "y":
