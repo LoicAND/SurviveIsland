@@ -1,3 +1,10 @@
+"""
+Save system module.
+
+Handles game state persistence using JSON files.
+Allows players to save, load, and delete their game progress.
+"""
+
 import json
 import os
 from game.player import Player
@@ -7,6 +14,18 @@ SAVE_FILE = "data/save.json"
 
 
 def save_game(player, current_day):
+    """
+    Save the current game state to a JSON file.
+    
+    Creates the data directory if it doesn't exist.
+    
+    Args:
+        player (Player): The player to save
+        current_day (int): Current day in the game
+        
+    Returns:
+        bool: True if save successful, False otherwise
+    """
     save_data = {
         "day": current_day,
         "player": {
@@ -31,6 +50,18 @@ def save_game(player, current_day):
 
 
 def load_game():
+    """
+    Load a saved game from the JSON file.
+    
+    Returns:
+        tuple: (Player, current_day) if successful, (None, None) otherwise
+        
+    Handles:
+        - Missing save file
+        - Empty save file
+        - Corrupted JSON data
+        - Invalid save data format
+    """
     if not os.path.exists(SAVE_FILE):
         print("\n📂 No save file found. Starting a new game...")
         return None, None
@@ -68,6 +99,14 @@ def load_game():
 
 
 def delete_save():
+    """
+    Delete the saved game file.
+    
+    Called when the game ends (victory or death) to clean up old saves.
+    
+    Returns:
+        bool: True if deletion successful or file doesn't exist, False on error
+    """
     if os.path.exists(SAVE_FILE):
         try:
             os.remove(SAVE_FILE)
