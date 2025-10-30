@@ -34,22 +34,19 @@ def fish(player):
 
 def sleep(player):
     """
-    Sleep to restore energy and advance to the next day.
+    Sleep to restore energy.
     
     Sleeping is essential for energy recovery but increases hunger and thirst.
-    Automatically increments the days_survived counter.
     
     Args:
         player (Player): The player performing the action
         
     Effects:
         - +50 energy, -10 hunger, -10 thirst
-        - Days survived +1
     """
     print("\n😴 You go to sleep...")
     player.update_gauges(delta_energy=50, delta_hunger=-10, delta_thirst=-10)
-    player.days_survived += 1
-    print(f"✅ You slept well! Day {player.days_survived}")
+    print(f"✅ You slept well!")
 
 
 def search_water(player):

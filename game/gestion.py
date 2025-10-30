@@ -199,8 +199,8 @@ def game_loop():
         
         player.update_gauges(delta_hunger=-5, delta_thirst=-5, delta_energy=-3)
         
-        if action_choice != "2":
-            player.days_survived += 1
+        # Each action = 1 day
+        player.days_survived += 1
         
         save_game(player, player.days_survived)
     
