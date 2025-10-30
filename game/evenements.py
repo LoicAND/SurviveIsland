@@ -1,3 +1,10 @@
+"""
+Random events module.
+
+Manages random events that occur after each player action.
+Events are weighted to control their probability of occurrence.
+"""
+
 import random
 
 
@@ -71,6 +78,26 @@ def boat_rescue(player):
 
 
 def generate_event(player):
+    """
+    Generate and apply a random event to the player.
+    
+    Events are selected based on weighted probabilities defined in EVENTS.
+    The boat_rescue event returns "RESCUE" to trigger a special victory condition.
+    
+    Args:
+        player (Player): The player affected by the event
+        
+    Returns:
+        str: Message describing the event outcome, or "RESCUE" for boat rescue
+        
+    Event weights:
+        - rain: 2/11 (~18%)
+        - animal_encounter: 2/11 (~18%)
+        - fruit_found: 3/11 (~27%)
+        - injury: 1/11 (~9%)
+        - nothing: 2/11 (~18%)
+        - boat_rescue: 1/11 (~9%)
+    """
     event_names = list(EVENTS.keys())
     weights = [EVENTS[event]["weight"] for event in event_names]
     

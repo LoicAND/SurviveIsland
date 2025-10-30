@@ -1,3 +1,10 @@
+"""
+Game management module.
+
+Contains the main game loop and all game flow control functions.
+Manages player actions, event triggers, victory/defeat conditions, and UI display.
+"""
+
 from game.player import Player
 from game.actions import fish, sleep, search_water, explore
 from game.evenements import generate_event
@@ -5,6 +12,14 @@ from game.save import save_game, load_game, delete_save
 
 
 def display_gauges(player):
+    """
+    Display the player's current statistics in a formatted way.
+    
+    Shows day counter, player name, and all vital stats (hunger, thirst, energy).
+    
+    Args:
+        player (Player): The player whose stats to display
+    """
     print(f"\n📅 Day {player.days_survived} - 🏝️ {player.name.upper()}")
     print("=" * 40)
     print(f"Hunger: {player.hunger}/100 | Thirst: {player.thirst}/100 | Energy: {player.energy}/100")
@@ -12,6 +27,21 @@ def display_gauges(player):
 
 
 def choose_action():
+    """
+    Display action menu and get player's choice.
+    
+    Validates input to ensure a valid action is selected.
+    
+    Returns:
+        str: The chosen action number (1-5) as a string
+        
+    Actions:
+        1 - Fish
+        2 - Sleep
+        3 - Search for water
+        4 - Explore
+        5 - Quit and save
+    """
     print("\n🎮 What do you want to do?")
     print("1 - Fish 🎣")
     print("2 - Sleep 😴")
@@ -31,6 +61,23 @@ def choose_action():
 
 
 def check_conditions(player, current_day, total_days):
+    """
+    Check if the game should end (victory or defeat).
+    
+    Args:
+        player (Player): The player to check
+        current_day (int): Current day in the game
+        total_days (int): Target number of days to survive
+        
+    Returns:
+        tuple: (continue_game, message)
+            - continue_game (bool): True if game should continue, False if ended
+            - message (str): Victory or defeat message if game ended, empty string otherwise
+            
+    End conditions:
+        - Defeat: Any vital stat (hunger, thirst, energy) reaches 0
+        - Victory: Survived the target number of days
+    """
     if not player.is_alive():
         cause = []
         if player.hunger <= 0:
@@ -49,6 +96,30 @@ def check_conditions(player, current_day, total_days):
 
 
 def game_loop():
+    """
+    Main game loop - the heart of the game.
+    
+    Manages the entire game flow:
+    1. Welcome screen and game setup
+    2. Load existing save or create new player
+    3. Player name input
+    4. Custom survival days goal (10-50)
+    5. Main turn-based loop:
+       - Display stats
+       - Check win/lose conditions
+       - Get player action
+       - Apply action effects
+       - Generate random event
+       - Handle boat rescue (alternative victory)
+       - Auto-save progress
+    6. Game over handling and replay option
+    
+    Special features:
+    - Auto-save after each turn
+    - Quit and save option (action 5)
+    - Boat rescue random event for alternative victory
+    - Custom survival goal between 10-50 days
+    """
     print("\n" + "="*50)
     print("🏝️  WELCOME TO SURVIVE ISLAND  🏝️")
     print("="*50)
